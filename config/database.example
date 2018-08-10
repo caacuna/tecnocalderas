@@ -1,0 +1,12 @@
+<?php
+	/**
+	 * Datos de acceso a base de datos Postgres
+	 * 
+	 * @var array
+	 */
+	$database = [
+		'host' => 'localhost',
+		'dbname' => '',
+		'user' => '',
+		'password' => ''
+	];
