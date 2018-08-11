@@ -15,17 +15,7 @@
 
 		<!-- Icons -->
 		<script src="assets/js/feather.min.js"></script>
-		<script>
-			feather.replace();
-			$(document).ready(function() {
-				$.extend( true, $.fn.dataTable.defaults, {
-					"language": {
-						"url": "assets/js/dataTables.spanish.json"
-					}
-				});
-
-				$('#datatable').DataTable();
-			});
-		</script>
+		<script src="assets/js/main.js"></script>
+		<?php if(isset($scripts)) echo $scripts; ?>
 	</body>
 </html>

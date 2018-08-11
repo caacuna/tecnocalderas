@@ -73,6 +73,33 @@ function get_alert($class = 'col-sm-12') {
 }
 
 /**
+ * verifica si existe valor $_POST para input, si existe lo imprime, sino imprime valor inicial
+ * 
+ * @param  string $name input name
+ * @param  string $init_value valor inicial
+ * @return void
+ */
+function ival($name, $init_value = NULL) {
+	if(isset($_POST[$name])) echo $_POST[$name];
+	else if(!empty($init_value)) echo $init_value;
+}
+
+/**
+ * verifica si una opción es la seleccionada para un input select
+ * 
+ * @param  string $name      input name
+ * @param  string $opt       option value
+ * @param  string $init_opt  option value inicial
+ * @return string           ' selected' o ''
+ */
+function sopt_selected($name, $opt, $init_opt = NULL) {
+	$selected = '';
+	if(isset($_POST[$name]) && $opt == $_POST[$name]) $selected = ' selected';
+	else if(!empty($init_opt) && $opt == $init_opt) $selected = ' selected';
+	return $selected;
+}
+
+/**
  * Verifica si el usuario con sesión actual tiene permiso a un módulo y acción dados
  * 
  * @param  string $mod     módulo

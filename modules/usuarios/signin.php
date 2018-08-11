@@ -5,7 +5,7 @@
 		$query_string = "SELECT U.email, U.password, U.nombres, U.apellidos, U.id_perfil, P.nom_perfil AS nombre_perfil
 			FROM usuario U
 			LEFT JOIN perfil P ON P.id_perfil = U.id_perfil
-			WHERE U.email = '$email' AND U.password = '" . md5($password) . "'";
+			WHERE U.eliminado = false AND U.email = '$email' AND U.password = '" . md5($password) . "'";
 		$query = pg_query($db_connection, $query_string);
 		$usuario_valido = pg_fetch_assoc($query);
 		if(!$usuario_valido) {
