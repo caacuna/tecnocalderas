@@ -13,5 +13,10 @@
 			'agregar' => [1],
 			'editar' => [1],
 			'eliminar' => [1]
+		],
+		'marca'=> [
+			'index'=> [1],
+
+
 		]
 	];

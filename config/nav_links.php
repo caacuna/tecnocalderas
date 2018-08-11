@@ -6,5 +6,6 @@
 	 */
 	$nav_links = [
 		['titulo'=> 'Inicio', 'mod' => 'general', 'action' => 'inicio', 'icono' => 'home'],
-		['titulo'=> 'Usuarios', 'mod' => 'usuarios', 'action' => 'index', 'icono' => 'users']
+		['titulo'=> 'Usuarios', 'mod' => 'usuarios', 'action' => 'index', 'icono' => 'users'],
+		['titulo'=> 'Marca','mod'=> 'marca','action'=> 'index','icono'=>'tag']
 	];
