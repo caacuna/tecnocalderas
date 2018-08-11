@@ -9,6 +9,12 @@
 			header("Location: " . mod_link('usuarios'));
 			die();
 		} else {
+			if(usuario('id') == $id_usuario) { // no es posible eliminarme a mi mismo
+				set_alert('No es posible eliminar su propio usuario.', 'danger');
+				header("Location: " . mod_link('usuarios'));
+				die();
+			}
+
 			$query = "UPDATE usuario SET eliminado = true WHERE id_usuario = $id_usuario";
 			$result = pg_query($query);
 			if($result) {
