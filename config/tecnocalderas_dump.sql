@@ -349,7 +349,6 @@ ALTER SEQUENCE tipo_id_tipo_seq OWNED BY tipo.id_tipo;
 CREATE TABLE usuario (
     rut character varying(9) NOT NULL,
     password character varying(512) NOT NULL,
-    admin boolean NOT NULL,
     nombres character varying(100) NOT NULL,
     apellidos character varying(100) NOT NULL,
     email character varying(100) NOT NULL,
@@ -629,9 +628,9 @@ SELECT pg_catalog.setval('tipo_id_tipo_seq', 1, false);
 -- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY usuario (rut, password, admin, nombres, apellidos, email, id_inst, id_cargo, id_perfil, celular, direccion, id_usuario) FROM stdin;
-18475962	cliente	f	Vale	ac	cliente@cliente.cl	1	1	1	976106514	dir2	1
-17684798	21232f297a57a5a743894a0e4a801fc3	t	cata	ac	admin@admin.cl	\N	\N	1	984692108	dir1	2
+COPY usuario (rut, password, nombres, apellidos, email, id_inst, id_cargo, id_perfil, celular, direccion, id_usuario) FROM stdin;
+18475962	cliente	Vale	ac	cliente@cliente.cl	1	1	1	976106514	dir2	1
+17684798	21232f297a57a5a743894a0e4a801fc3	cata	ac	admin@admin.cl	\N	\N	1	984692108	dir1	2
 \.
 
 
