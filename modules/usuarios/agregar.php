@@ -103,16 +103,6 @@
   		</div>
   	</div>
   	<div class="form-row">
-  		<div class="col-md-6 mb-3 d-none" id="id_cargo-wrap">
-  			<label for="id_cargo">Cargo</label>
-			<select class="form-control" name="id_cargo" id="id_cargo">
-				<option value="">Seleccione Cargo</option>
-				<?php foreach($cargos as $opt) printf('<option value="%s"%s>%s</option>', $opt['id_cargo'], sopt_selected('id_cargo', $opt['id_cargo']), $opt['nombre_cargo']); ?>
-			</select>
-			<div class="invalid-feedback">
-				Seleccione Cargo
-			</div>
-  		</div>  		
   		<div class="col-md-6 mb-3 d-none" id="id_inst-wrap">
   			<label for="id_inst">Institución</label>
 			<select class="form-control" name="id_inst" id="id_inst">
@@ -122,6 +112,16 @@
 			<div class="invalid-feedback">
 				Seleccione Institución
 			</div>
+  		</div>  		
+  		<div class="col-md-6 mb-3 d-none" id="id_cargo-wrap">
+  			<label for="id_cargo">Cargo</label>
+			<select class="form-control" name="id_cargo" id="id_cargo">
+				<option value="">Seleccione Cargo</option>
+				<?php foreach($cargos as $opt) printf('<option value="%s"%s>%s</option>', $opt['id_cargo'], sopt_selected('id_cargo', $opt['id_cargo']), $opt['nombre_cargo']); ?>
+			</select>
+			<div class="invalid-feedback">
+				Seleccione Cargo
+			</div>
   		</div>
   	</div>  	
   	<button class="btn btn-primary" type="submit">Guardar</button>
@@ -129,20 +129,19 @@
 
 <?php ob_start(); ?>
 <script>
-
 function cargo_perfil(id_perfil) {
 	if(id_perfil == 1 || id_perfil == 2) {
-		$('#id_cargo-wrap').removeClass('d-none');
-		$('#id_cargo').prop('required', true);
 		$('#id_inst-wrap').addClass('d-none');
 		$('#id_inst').prop('required', false);
 		$('#id_inst').val('');
-	} else if(id_perfil == 3) {
 		$('#id_cargo-wrap').addClass('d-none');
 		$('#id_cargo').prop('required', false);
 		$('#id_cargo').val('');
+	} else if(id_perfil == 3) {
 		$('#id_inst-wrap').removeClass('d-none');
 		$('#id_inst').prop('required', true);
+		$('#id_cargo-wrap').removeClass('d-none');
+		$('#id_cargo').prop('required', true);
 	}
 }
 
