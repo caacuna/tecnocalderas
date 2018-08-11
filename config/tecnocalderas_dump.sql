@@ -36,7 +36,8 @@ SET default_with_oids = false;
 CREATE TABLE actividades (
     id_act integer NOT NULL,
     nombre_act character varying(100) NOT NULL,
-    descripcion character varying(500)
+    descripcion character varying(500),
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -69,7 +70,8 @@ ALTER SEQUENCE actividades_id_act_seq OWNED BY actividades.id_act;
 
 CREATE TABLE alimentacion (
     id_alimentacion integer NOT NULL,
-    nom_alim character varying(50) NOT NULL
+    nom_alim character varying(50) NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -102,7 +104,8 @@ ALTER SEQUENCE alimentacion_id_alimentacion_seq OWNED BY alimentacion.id_aliment
 
 CREATE TABLE asignacion (
     email character varying(100) NOT NULL,
-    id_caldera integer NOT NULL
+    id_caldera integer NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -129,7 +132,8 @@ CREATE TABLE caldera (
     seca boolean,
     pirotubular boolean,
     acuotubular boolean,
-    igneotubular boolean
+    igneotubular boolean,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -162,7 +166,8 @@ ALTER SEQUENCE caldera_id_caldera_seq OWNED BY caldera.id_caldera;
 
 CREATE TABLE comuna (
     id_comuna integer NOT NULL,
-    nombre_comuna character varying(256) NOT NULL
+    nombre_comuna character varying(256) NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -209,7 +214,8 @@ CREATE TABLE institucion (
     id_inst numeric NOT NULL,
     nom_inst character varying(256) NOT NULL,
     rut_inst character varying(30) NOT NULL,
-    direccion character varying(256)
+    direccion character varying(256),
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -222,7 +228,8 @@ ALTER TABLE institucion OWNER TO postgres;
 CREATE TABLE mantenciones (
     id_mantencion integer NOT NULL,
     id_caldera integer NOT NULL,
-    fecha_mant date NOT NULL
+    fecha_mant date NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -255,7 +262,8 @@ ALTER SEQUENCE mantenciones_id_mantencion_seq OWNED BY mantenciones.id_mantencio
 
 CREATE TABLE marca (
     nom_marca character varying(100) NOT NULL,
-    id_marca integer NOT NULL
+    id_marca integer NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -288,7 +296,8 @@ ALTER SEQUENCE marca_id_marca_seq OWNED BY marca.id_marca;
 
 CREATE TABLE perfil (
     id_perfil numeric NOT NULL,
-    nom_perfil character varying(25) NOT NULL
+    nom_perfil character varying(25) NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -303,7 +312,8 @@ CREATE TABLE tipo (
     id_tipo integer NOT NULL,
     gal_hora character varying(10),
     libr_hora character varying(10),
-    pasos numeric
+    pasos numeric,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -315,7 +325,8 @@ ALTER TABLE tipo OWNER TO postgres;
 
 CREATE TABLE tipo_contacto (
     id_cargo numeric NOT NULL,
-    nombre_cargo character varying(100) NOT NULL
+    nombre_cargo character varying(100) NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -357,7 +368,8 @@ CREATE TABLE usuario (
     id_perfil numeric NOT NULL,
     celular character varying(12) NOT NULL,
     direccion character varying(256),
-    id_usuario integer NOT NULL
+    id_usuario integer NOT NULL,
+    eliminado boolean DEFAULT false NOT NULL
 );
 
 
@@ -444,7 +456,7 @@ ALTER TABLE ONLY usuario ALTER COLUMN id_usuario SET DEFAULT nextval('usuario_id
 -- Data for Name: actividades; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY actividades (id_act, nombre_act, descripcion) FROM stdin;
+COPY actividades (id_act, nombre_act, descripcion, eliminado) FROM stdin;
 \.
 
 
@@ -459,10 +471,10 @@ SELECT pg_catalog.setval('actividades_id_act_seq', 1, false);
 -- Data for Name: alimentacion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY alimentacion (id_alimentacion, nom_alim) FROM stdin;
-1	Aceite
-2	Vapor
-3	Agua
+COPY alimentacion (id_alimentacion, nom_alim, eliminado) FROM stdin;
+1	Aceite	f
+2	Vapor	f
+3	Agua	f
 \.
 
 
@@ -477,7 +489,7 @@ SELECT pg_catalog.setval('alimentacion_id_alimentacion_seq', 1, false);
 -- Data for Name: asignacion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY asignacion (email, id_caldera) FROM stdin;
+COPY asignacion (email, id_caldera, eliminado) FROM stdin;
 \.
 
 
@@ -485,7 +497,7 @@ COPY asignacion (email, id_caldera) FROM stdin;
 -- Data for Name: caldera; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY caldera (id_caldera, nombre_tipo, id_tipo, id_comuna, id_marca, id_inst, id_alimentacion, nom_alim, ano, pasos, latitud, longitud, vertical, seca, pirotubular, acuotubular, igneotubular) FROM stdin;
+COPY caldera (id_caldera, nombre_tipo, id_tipo, id_comuna, id_marca, id_inst, id_alimentacion, nom_alim, ano, pasos, latitud, longitud, vertical, seca, pirotubular, acuotubular, igneotubular, eliminado) FROM stdin;
 \.
 
 
@@ -500,37 +512,37 @@ SELECT pg_catalog.setval('caldera_id_caldera_seq', 1, false);
 -- Data for Name: comuna; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY comuna (id_comuna, nombre_comuna) FROM stdin;
-2	Cauquenes
-3	Chanco
-4	Pelluhue
-5	Curicó
-6	Hualañe
-7	Licantén
-8	Molina
-9	Romeral
-10	Ranco
-11	Sagrada Familia
-12	Teno
-13	Vichuquen
-14	Linares
-15	Colbún
-16	Longaví
-17	Parral
-18	Retiro
-19	San Javier
-20	Villa Alegre
-21	Yerbas Buenas
-22	Talca
-23	Constitución
-24	Curepto
-25	Empedrado
-26	Maule
-27	Pelarco
-28	Pencahue
-29	Rio Claro
-30	San Clemente
-31	San Rafael
+COPY comuna (id_comuna, nombre_comuna, eliminado) FROM stdin;
+2	Cauquenes	f
+3	Chanco	f
+4	Pelluhue	f
+5	Curicó	f
+6	Hualañe	f
+7	Licantén	f
+8	Molina	f
+9	Romeral	f
+10	Ranco	f
+11	Sagrada Familia	f
+12	Teno	f
+13	Vichuquen	f
+14	Linares	f
+15	Colbún	f
+16	Longaví	f
+17	Parral	f
+18	Retiro	f
+19	San Javier	f
+20	Villa Alegre	f
+21	Yerbas Buenas	f
+22	Talca	f
+23	Constitución	f
+24	Curepto	f
+25	Empedrado	f
+26	Maule	f
+27	Pelarco	f
+28	Pencahue	f
+29	Rio Claro	f
+30	San Clemente	f
+31	San Rafael	f
 \.
 
 
@@ -553,8 +565,8 @@ COPY detalle_mantenciones (id_act, id_mantencion) FROM stdin;
 -- Data for Name: institucion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY institucion (id_inst, nom_inst, rut_inst, direccion) FROM stdin;
-1	Hospital	1111111	dir 1
+COPY institucion (id_inst, nom_inst, rut_inst, direccion, eliminado) FROM stdin;
+1	Hospital	1111111	dir 1	f
 \.
 
 
@@ -562,7 +574,7 @@ COPY institucion (id_inst, nom_inst, rut_inst, direccion) FROM stdin;
 -- Data for Name: mantenciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY mantenciones (id_mantencion, id_caldera, fecha_mant) FROM stdin;
+COPY mantenciones (id_mantencion, id_caldera, fecha_mant, eliminado) FROM stdin;
 \.
 
 
@@ -577,7 +589,8 @@ SELECT pg_catalog.setval('mantenciones_id_mantencion_seq', 1, false);
 -- Data for Name: marca; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY marca (nom_marca, id_marca) FROM stdin;
+COPY marca (nom_marca, id_marca, eliminado) FROM stdin;
+marca1	1	f
 \.
 
 
@@ -585,16 +598,17 @@ COPY marca (nom_marca, id_marca) FROM stdin;
 -- Name: marca_id_marca_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('marca_id_marca_seq', 1, false);
+SELECT pg_catalog.setval('marca_id_marca_seq', 1, true);
 
 
 --
 -- Data for Name: perfil; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY perfil (id_perfil, nom_perfil) FROM stdin;
-1	Tecnico
-2	Cliente
+COPY perfil (id_perfil, nom_perfil, eliminado) FROM stdin;
+1	Tecnico/Administrador	f
+2	Tecnico	f
+3	Cliente	f
 \.
 
 
@@ -602,7 +616,7 @@ COPY perfil (id_perfil, nom_perfil) FROM stdin;
 -- Data for Name: tipo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY tipo (nombre_tipo, id_tipo, gal_hora, libr_hora, pasos) FROM stdin;
+COPY tipo (nombre_tipo, id_tipo, gal_hora, libr_hora, pasos, eliminado) FROM stdin;
 \.
 
 
@@ -610,10 +624,10 @@ COPY tipo (nombre_tipo, id_tipo, gal_hora, libr_hora, pasos) FROM stdin;
 -- Data for Name: tipo_contacto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY tipo_contacto (id_cargo, nombre_cargo) FROM stdin;
-1	Encargado Caldera
-2	Encargado Finanzas
-3	Encargado Caldera/Finanzas
+COPY tipo_contacto (id_cargo, nombre_cargo, eliminado) FROM stdin;
+1	Encargado Caldera	f
+2	Encargado Finanzas	f
+3	Encargado Caldera/Finanzas	f
 \.
 
 
@@ -628,9 +642,9 @@ SELECT pg_catalog.setval('tipo_id_tipo_seq', 1, false);
 -- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY usuario (rut, password, nombres, apellidos, email, id_inst, id_cargo, id_perfil, celular, direccion, id_usuario) FROM stdin;
-18475962	cliente	Vale	ac	cliente@cliente.cl	1	1	1	976106514	dir2	1
-17684798	21232f297a57a5a743894a0e4a801fc3	cata	ac	admin@admin.cl	\N	\N	1	984692108	dir1	2
+COPY usuario (rut, password, nombres, apellidos, email, id_inst, id_cargo, id_perfil, celular, direccion, id_usuario, eliminado) FROM stdin;
+18475962	cliente	Vale	ac	cliente@cliente.cl	1	1	1	976106514	dir2	1	f
+17684798	21232f297a57a5a743894a0e4a801fc3	cata	ac	admin@admin.cl	\N	\N	1	984692108	dir1	2	f
 \.
 
 
@@ -918,13 +932,6 @@ CREATE UNIQUE INDEX tipo_contacto_pk ON tipo_contacto USING btree (id_cargo);
 --
 
 CREATE UNIQUE INDEX tipo_pk ON tipo USING btree (nombre_tipo, id_tipo);
-
-
---
--- Name: usuario_pk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE UNIQUE INDEX usuario_pk ON usuario USING btree (email);
 
 
 --
