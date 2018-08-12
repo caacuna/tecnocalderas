@@ -25,6 +25,43 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: orientacion; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE orientacion AS ENUM (
+    'horizontal',
+    'vertical'
+);
+
+
+ALTER TYPE orientacion OWNER TO postgres;
+
+--
+-- Name: tipo_espalda; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE tipo_espalda AS ENUM (
+    'seca',
+    'humeda'
+);
+
+
+ALTER TYPE tipo_espalda OWNER TO postgres;
+
+--
+-- Name: tipo_tubular; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE tipo_tubular AS ENUM (
+    'pirotubular',
+    'igneotubular',
+    'acuotubular'
+);
+
+
+ALTER TYPE tipo_tubular OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -112,15 +149,12 @@ CREATE TABLE caldera (
     pasos numeric,
     latitud character varying(256) NOT NULL,
     longitud character varying(256) NOT NULL,
-    vertical boolean NOT NULL,
-    seca boolean,
-    pirotubular boolean,
-    acuotubular boolean,
-    igneotubular boolean,
     eliminado boolean DEFAULT false NOT NULL,
-    gal_hora bigint,
-    lib_hora bigint,
-    id_usuario integer
+    id_usuario integer NOT NULL,
+    capacidad bigint NOT NULL,
+    tipo_espalda tipo_espalda,
+    tipo_tubular tipo_tubular,
+    orientacion orientacion NOT NULL
 );
 
 
@@ -291,17 +325,52 @@ CREATE TABLE perfil (
 ALTER TABLE perfil OWNER TO postgres;
 
 --
+-- Name: tipo_contacto_id_cargo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE tipo_contacto_id_cargo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tipo_contacto_id_cargo_seq OWNER TO postgres;
+
+--
 -- Name: tipo_contacto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE tipo_contacto (
-    id_cargo numeric NOT NULL,
+    id_cargo numeric DEFAULT nextval('tipo_contacto_id_cargo_seq'::regclass) NOT NULL,
     nombre_cargo character varying(100) NOT NULL,
     eliminado boolean DEFAULT false NOT NULL
 );
 
 
 ALTER TABLE tipo_contacto OWNER TO postgres;
+
+--
+-- Name: tipo_conctacto_id_cargo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE tipo_conctacto_id_cargo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tipo_conctacto_id_cargo_seq OWNER TO postgres;
+
+--
+-- Name: tipo_conctacto_id_cargo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE tipo_conctacto_id_cargo_seq OWNED BY tipo_contacto.id_cargo;
+
 
 --
 -- Name: usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -432,7 +501,7 @@ SELECT pg_catalog.setval('alimentacion_id_alimentacion_seq', 1, false);
 -- Data for Name: caldera; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY caldera (id_caldera, id_comuna, id_marca, id_inst, id_alimentacion, ano, pasos, latitud, longitud, vertical, seca, pirotubular, acuotubular, igneotubular, eliminado, gal_hora, lib_hora, id_usuario) FROM stdin;
+COPY caldera (id_caldera, id_comuna, id_marca, id_inst, id_alimentacion, ano, pasos, latitud, longitud, eliminado, id_usuario, capacidad, tipo_espalda, tipo_tubular, orientacion) FROM stdin;
 \.
 
 
@@ -448,7 +517,6 @@ SELECT pg_catalog.setval('caldera_id_caldera_seq', 1, false);
 --
 
 COPY comuna (id_comuna, nombre_comuna, eliminado) FROM stdin;
-2	Cauquenes	f
 3	Chanco	f
 4	Pelluhue	f
 5	Curicó	f
@@ -478,6 +546,8 @@ COPY comuna (id_comuna, nombre_comuna, eliminado) FROM stdin;
 29	Rio Claro	f
 30	San Clemente	f
 31	San Rafael	f
+2	Cauquenes	t
+32	Cauquenes	f
 \.
 
 
@@ -485,7 +555,7 @@ COPY comuna (id_comuna, nombre_comuna, eliminado) FROM stdin;
 -- Name: comuna_id_comuna_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('comuna_id_comuna_seq', 31, true);
+SELECT pg_catalog.setval('comuna_id_comuna_seq', 32, true);
 
 
 --
@@ -525,8 +595,8 @@ SELECT pg_catalog.setval('mantenciones_id_mantencion_seq', 1, false);
 --
 
 COPY marca (nom_marca, id_marca, eliminado) FROM stdin;
-marca1	1	f
 marca 2	2	t
+Marca 1	1	f
 \.
 
 
@@ -549,14 +619,27 @@ COPY perfil (id_perfil, nom_perfil, eliminado) FROM stdin;
 
 
 --
+-- Name: tipo_conctacto_id_cargo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tipo_conctacto_id_cargo_seq', 3, true);
+
+
+--
 -- Data for Name: tipo_contacto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY tipo_contacto (id_cargo, nombre_cargo, eliminado) FROM stdin;
 1	Encargado Caldera	f
 2	Encargado Finanzas	f
-3	Encargado Caldera/Finanzas	f
 \.
+
+
+--
+-- Name: tipo_contacto_id_cargo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tipo_contacto_id_cargo_seq', 2, true);
 
 
 --
@@ -564,7 +647,6 @@ COPY tipo_contacto (id_cargo, nombre_cargo, eliminado) FROM stdin;
 --
 
 COPY usuario (rut, password, nombres, apellidos, email, id_inst, id_cargo, id_perfil, celular, direccion, id_usuario, eliminado) FROM stdin;
-18475962	cliente	Vale	ac	cliente@cliente.cl	1	1	1	976106514	dir2	1	f
 17684798	21232f297a57a5a743894a0e4a801fc3	cata	ac	admin@admin.cl	\N	\N	1	984692108	dir1	2	f
 \.
 
@@ -573,7 +655,7 @@ COPY usuario (rut, password, nombres, apellidos, email, id_inst, id_cargo, id_pe
 -- Name: usuario_id_usuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('usuario_id_usuario_seq', 2, true);
+SELECT pg_catalog.setval('usuario_id_usuario_seq', 3, true);
 
 
 --
