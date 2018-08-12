@@ -63,7 +63,7 @@
 	$marcas = pg_fetch_all($query);
 
 	// alimentaciones para select
-	$query = pg_query("SELECT * FROM alimentacion WHERE eliminado = false");
+	$query = pg_query("SELECT * FROM alimentacion");
 	$alimentaciones = pg_fetch_all($query);	
 
 	// orientaciones para select
