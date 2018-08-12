@@ -107,8 +107,7 @@ ALTER SEQUENCE actividades_id_act_seq OWNED BY actividades.id_act;
 
 CREATE TABLE alimentacion (
     id_alimentacion integer NOT NULL,
-    nom_alim character varying(50) NOT NULL,
-    eliminado boolean DEFAULT false NOT NULL
+    nom_alim character varying(50) NOT NULL
 );
 
 
@@ -317,8 +316,7 @@ ALTER SEQUENCE marca_id_marca_seq OWNED BY marca.id_marca;
 
 CREATE TABLE perfil (
     id_perfil numeric NOT NULL,
-    nom_perfil character varying(25) NOT NULL,
-    eliminado boolean DEFAULT false NOT NULL
+    nom_perfil character varying(25) NOT NULL
 );
 
 
@@ -483,10 +481,10 @@ SELECT pg_catalog.setval('actividades_id_act_seq', 1, false);
 -- Data for Name: alimentacion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY alimentacion (id_alimentacion, nom_alim, eliminado) FROM stdin;
-1	Aceite	f
-2	Vapor	f
-3	Agua	f
+COPY alimentacion (id_alimentacion, nom_alim) FROM stdin;
+1	Aceite
+2	Vapor
+3	Agua
 \.
 
 
@@ -611,10 +609,10 @@ SELECT pg_catalog.setval('marca_id_marca_seq', 2, true);
 -- Data for Name: perfil; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY perfil (id_perfil, nom_perfil, eliminado) FROM stdin;
-1	Tecnico/Administrador	f
-2	Tecnico	f
-3	Cliente	f
+COPY perfil (id_perfil, nom_perfil) FROM stdin;
+1	Tecnico/Administrador
+2	Tecnico
+3	Cliente
 \.
 
 
@@ -630,8 +628,9 @@ SELECT pg_catalog.setval('tipo_conctacto_id_cargo_seq', 3, true);
 --
 
 COPY tipo_contacto (id_cargo, nombre_cargo, eliminado) FROM stdin;
-1	Encargado Caldera	f
 2	Encargado Finanzas	f
+3	Encargado Calderas/Finanzas	f
+1	Encargado Calderas	f
 \.
 
 
@@ -639,7 +638,7 @@ COPY tipo_contacto (id_cargo, nombre_cargo, eliminado) FROM stdin;
 -- Name: tipo_contacto_id_cargo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('tipo_contacto_id_cargo_seq', 2, true);
+SELECT pg_catalog.setval('tipo_contacto_id_cargo_seq', 3, true);
 
 
 --

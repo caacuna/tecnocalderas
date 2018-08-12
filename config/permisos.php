@@ -28,7 +28,6 @@
 		],
 		'perfil'=>[
 			'index' =>[1],
-			'agregar' => [1],
 			'editar' => [1]			
 		],
 		'institucion'=>[
@@ -39,9 +38,7 @@
 		],
 		'alimentacion'=>[
 			'index'=>[1],
-			'agregar' => [1],
 			'editar' => [1],
-			'eliminar' => [1]
 		],
 		'tipo_contacto'=>[
 			'index'=>[1],
