@@ -227,11 +227,25 @@ CREATE TABLE detalle_mantenciones (
 ALTER TABLE detalle_mantenciones OWNER TO postgres;
 
 --
+-- Name: institucion_id_inst_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE institucion_id_inst_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE institucion_id_inst_seq OWNER TO postgres;
+
+--
 -- Name: institucion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE institucion (
-    id_inst numeric NOT NULL,
+    id_inst numeric DEFAULT nextval('institucion_id_inst_seq'::regclass) NOT NULL,
     nom_inst character varying(256) NOT NULL,
     rut_inst character varying(30) NOT NULL,
     direccion character varying(256),
@@ -482,9 +496,9 @@ SELECT pg_catalog.setval('actividades_id_act_seq', 1, false);
 --
 
 COPY alimentacion (id_alimentacion, nom_alim) FROM stdin;
-1	Aceite
 2	Vapor
 3	Agua
+1	Aceite
 \.
 
 
@@ -569,8 +583,17 @@ COPY detalle_mantenciones (id_act, id_mantencion) FROM stdin;
 --
 
 COPY institucion (id_inst, nom_inst, rut_inst, direccion, eliminado) FROM stdin;
-1	Hospital	1111111	dir 1	f
+4	cata	123456888		t
+2	hosp	123456789	dir1	t
+3	Hospital de Talcaa	12345677	ok	f
 \.
+
+
+--
+-- Name: institucion_id_inst_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('institucion_id_inst_seq', 4, true);
 
 
 --
