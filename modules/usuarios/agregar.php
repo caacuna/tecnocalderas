@@ -24,11 +24,11 @@
 	include 'includes/header.php';
 
 	// instituciones para select
-	$query = pg_query("SELECT * FROM institucion");
+	$query = pg_query("SELECT * FROM institucion WHERE eliminado = false");
 	$instituciones = pg_fetch_all($query);
 
 	// cargos para select
-	$query = pg_query("SELECT * FROM tipo_contacto");
+	$query = pg_query("SELECT * FROM tipo_contacto WHERE eliminado = false");
 	$cargos = pg_fetch_all($query);
 
 	// perfiles para select

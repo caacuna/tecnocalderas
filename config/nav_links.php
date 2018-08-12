@@ -14,4 +14,5 @@
 		['titulo'=> 'Alimentacion Calderas','mod'=>'alimentacion','action'=>'index','icono'=>'tag'],
 		['titulo'=> 'Cargos Empresas', 'mod'=>'tipo_contacto', 'action'=>'index', 'icono'=>'tag'],
 		['titulo'=> 'Actividades de Mantencion','mod'=>'actividades', 'action'=>'index','icono'=>'tag'],
+		['titulo'=> 'Calderas','mod'=>'calderas', 'action'=>'index','icono'=>'box'],
 	];
