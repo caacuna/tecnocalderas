@@ -102,6 +102,18 @@ ALTER SEQUENCE actividades_id_act_seq OWNED BY actividades.id_act;
 
 
 --
+-- Name: actividades_mantencion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE actividades_mantencion (
+    id_act integer NOT NULL,
+    id_mantencion integer NOT NULL
+);
+
+
+ALTER TABLE actividades_mantencion OWNER TO postgres;
+
+--
 -- Name: alimentacion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -215,18 +227,6 @@ ALTER SEQUENCE comuna_id_comuna_seq OWNED BY comuna.id_comuna;
 
 
 --
--- Name: detalle_mantenciones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE detalle_mantenciones (
-    id_act integer NOT NULL,
-    id_mantencion integer NOT NULL
-);
-
-
-ALTER TABLE detalle_mantenciones OWNER TO postgres;
-
---
 -- Name: institucion_id_inst_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -263,7 +263,9 @@ CREATE TABLE mantenciones (
     id_mantencion integer NOT NULL,
     id_caldera integer NOT NULL,
     fecha_mant date NOT NULL,
-    eliminado boolean DEFAULT false NOT NULL
+    eliminado boolean DEFAULT false NOT NULL,
+    id_usuario bigint NOT NULL,
+    comentario character varying(500)
 );
 
 
@@ -364,27 +366,6 @@ CREATE TABLE tipo_contacto (
 ALTER TABLE tipo_contacto OWNER TO postgres;
 
 --
--- Name: tipo_conctacto_id_cargo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tipo_conctacto_id_cargo_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tipo_conctacto_id_cargo_seq OWNER TO postgres;
-
---
--- Name: tipo_conctacto_id_cargo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tipo_conctacto_id_cargo_seq OWNED BY tipo_contacto.id_cargo;
-
-
---
 -- Name: usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -481,6 +462,9 @@ ALTER TABLE ONLY usuario ALTER COLUMN id_usuario SET DEFAULT nextval('usuario_id
 --
 
 COPY actividades (id_act, nombre_act, descripcion, eliminado) FROM stdin;
+1	repuesto	shdaklfh	t
+2	Cambiar Pieza	Se realiza reemplazo....holi	f
+3	safadf	dfdfdfdf	f
 \.
 
 
@@ -488,7 +472,15 @@ COPY actividades (id_act, nombre_act, descripcion, eliminado) FROM stdin;
 -- Name: actividades_id_act_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('actividades_id_act_seq', 1, false);
+SELECT pg_catalog.setval('actividades_id_act_seq', 3, true);
+
+
+--
+-- Data for Name: actividades_mantencion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY actividades_mantencion (id_act, id_mantencion) FROM stdin;
+\.
 
 
 --
@@ -514,6 +506,7 @@ SELECT pg_catalog.setval('alimentacion_id_alimentacion_seq', 1, false);
 --
 
 COPY caldera (id_caldera, id_comuna, id_marca, id_inst, id_alimentacion, ano, pasos, latitud, longitud, eliminado, id_usuario, capacidad, tipo_espalda, tipo_tubular, orientacion) FROM stdin;
+1	4	1	3	2	1990	2	adfsdf	sdfadf	f	2	2000000	humeda	igneotubular	horizontal
 \.
 
 
@@ -521,7 +514,7 @@ COPY caldera (id_caldera, id_comuna, id_marca, id_inst, id_alimentacion, ano, pa
 -- Name: caldera_id_caldera_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('caldera_id_caldera_seq', 1, false);
+SELECT pg_catalog.setval('caldera_id_caldera_seq', 1, true);
 
 
 --
@@ -571,14 +564,6 @@ SELECT pg_catalog.setval('comuna_id_comuna_seq', 32, true);
 
 
 --
--- Data for Name: detalle_mantenciones; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY detalle_mantenciones (id_act, id_mantencion) FROM stdin;
-\.
-
-
---
 -- Data for Name: institucion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -600,7 +585,7 @@ SELECT pg_catalog.setval('institucion_id_inst_seq', 4, true);
 -- Data for Name: mantenciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY mantenciones (id_mantencion, id_caldera, fecha_mant, eliminado) FROM stdin;
+COPY mantenciones (id_mantencion, id_caldera, fecha_mant, eliminado, id_usuario, comentario) FROM stdin;
 \.
 
 
@@ -637,13 +622,6 @@ COPY perfil (id_perfil, nom_perfil) FROM stdin;
 2	Tecnico
 3	Cliente
 \.
-
-
---
--- Name: tipo_conctacto_id_cargo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tipo_conctacto_id_cargo_seq', 3, true);
 
 
 --
@@ -716,7 +694,7 @@ ALTER TABLE ONLY comuna
 -- Name: pk_detalle_mantenciones; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY detalle_mantenciones
+ALTER TABLE ONLY actividades_mantencion
     ADD CONSTRAINT pk_detalle_mantenciones PRIMARY KEY (id_act, id_mantencion);
 
 
@@ -800,21 +778,21 @@ CREATE UNIQUE INDEX comuna_pk ON comuna USING btree (id_comuna);
 -- Name: detalle_mantenciones2_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX detalle_mantenciones2_fk ON detalle_mantenciones USING btree (id_mantencion);
+CREATE INDEX detalle_mantenciones2_fk ON actividades_mantencion USING btree (id_mantencion);
 
 
 --
 -- Name: detalle_mantenciones_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX detalle_mantenciones_fk ON detalle_mantenciones USING btree (id_act);
+CREATE INDEX detalle_mantenciones_fk ON actividades_mantencion USING btree (id_act);
 
 
 --
 -- Name: detalle_mantenciones_pk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE UNIQUE INDEX detalle_mantenciones_pk ON detalle_mantenciones USING btree (id_act, id_mantencion);
+CREATE UNIQUE INDEX detalle_mantenciones_pk ON actividades_mantencion USING btree (id_act, id_mantencion);
 
 
 --
@@ -937,7 +915,7 @@ ALTER TABLE ONLY caldera
 -- Name: fk_detalle__detalle_m_activida; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY detalle_mantenciones
+ALTER TABLE ONLY actividades_mantencion
     ADD CONSTRAINT fk_detalle__detalle_m_activida FOREIGN KEY (id_act) REFERENCES actividades(id_act) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
@@ -945,8 +923,16 @@ ALTER TABLE ONLY detalle_mantenciones
 -- Name: fk_detalle__detalle_m_mantenci; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY detalle_mantenciones
+ALTER TABLE ONLY actividades_mantencion
     ADD CONSTRAINT fk_detalle__detalle_m_mantenci FOREIGN KEY (id_mantencion) REFERENCES mantenciones(id_mantencion) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: fk_id_usuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mantenciones
+    ADD CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario);
 
 
 --
