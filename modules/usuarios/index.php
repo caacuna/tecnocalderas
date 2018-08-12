@@ -1,7 +1,11 @@
 <?php
 	$titulo = 'Usuarios';
 	include 'includes/header.php';
-	$query = pg_query("SELECT * FROM usuario WHERE eliminado = false");
+	$query_string = "SELECT U.*, P.nom_perfil AS nombre_perfil
+			FROM usuario U
+			LEFT JOIN perfil P ON P.id_perfil = U.id_perfil
+			WHERE U.eliminado = false";
+	$query = pg_query($query_string);
 
 	$puede_agregar = tiene_permiso('usuarios', 'agregar');
 	$puede_editar = tiene_permiso('usuarios', 'editar');
@@ -23,6 +27,7 @@
 				<th scope="col">Nombres</th>
 				<th scope="col">Apellidos</th>
 				<th scope="col">Email</th>
+				<th scope="col">Perfil</th>
 				<?php if($ve_acciones): ?>
 				<th scope="col" class="acciones">Acciones</th>
 				<?php endif; ?>
@@ -34,6 +39,7 @@
 				<td scope="row"><?php echo $fila->nombres; ?></td>
 				<td><?php echo $fila->apellidos; ?></td>
 				<td><?php echo $fila->email; ?></td>
+				<td><?php echo $fila->nombre_perfil; ?></td>
 				<?php if($ve_acciones): ?>
 				<td>
 					<?php if($puede_editar): ?>	
