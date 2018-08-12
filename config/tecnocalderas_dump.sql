@@ -99,31 +99,15 @@ ALTER SEQUENCE alimentacion_id_alimentacion_seq OWNED BY alimentacion.id_aliment
 
 
 --
--- Name: asignacion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE asignacion (
-    email character varying(100) NOT NULL,
-    id_caldera integer NOT NULL,
-    eliminado boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE asignacion OWNER TO postgres;
-
---
 -- Name: caldera; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE caldera (
     id_caldera integer NOT NULL,
-    nombre_tipo character varying(50) NOT NULL,
-    id_tipo integer NOT NULL,
     id_comuna integer NOT NULL,
     id_marca integer NOT NULL,
     id_inst numeric NOT NULL,
     id_alimentacion integer NOT NULL,
-    nom_alim character varying(50) NOT NULL,
     ano numeric NOT NULL,
     pasos numeric,
     latitud character varying(256) NOT NULL,
@@ -133,7 +117,10 @@ CREATE TABLE caldera (
     pirotubular boolean,
     acuotubular boolean,
     igneotubular boolean,
-    eliminado boolean DEFAULT false NOT NULL
+    eliminado boolean DEFAULT false NOT NULL,
+    gal_hora bigint,
+    lib_hora bigint,
+    id_usuario integer
 );
 
 
@@ -304,22 +291,6 @@ CREATE TABLE perfil (
 ALTER TABLE perfil OWNER TO postgres;
 
 --
--- Name: tipo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE tipo (
-    nombre_tipo character varying(50) NOT NULL,
-    id_tipo integer NOT NULL,
-    gal_hora character varying(10),
-    libr_hora character varying(10),
-    pasos numeric,
-    eliminado boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE tipo OWNER TO postgres;
-
---
 -- Name: tipo_contacto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -331,27 +302,6 @@ CREATE TABLE tipo_contacto (
 
 
 ALTER TABLE tipo_contacto OWNER TO postgres;
-
---
--- Name: tipo_id_tipo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE tipo_id_tipo_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tipo_id_tipo_seq OWNER TO postgres;
-
---
--- Name: tipo_id_tipo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE tipo_id_tipo_seq OWNED BY tipo.id_tipo;
-
 
 --
 -- Name: usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -439,13 +389,6 @@ ALTER TABLE ONLY marca ALTER COLUMN id_marca SET DEFAULT nextval('marca_id_marca
 
 
 --
--- Name: id_tipo; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY tipo ALTER COLUMN id_tipo SET DEFAULT nextval('tipo_id_tipo_seq'::regclass);
-
-
---
 -- Name: id_usuario; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -486,18 +429,10 @@ SELECT pg_catalog.setval('alimentacion_id_alimentacion_seq', 1, false);
 
 
 --
--- Data for Name: asignacion; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY asignacion (email, id_caldera, eliminado) FROM stdin;
-\.
-
-
---
 -- Data for Name: caldera; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY caldera (id_caldera, nombre_tipo, id_tipo, id_comuna, id_marca, id_inst, id_alimentacion, nom_alim, ano, pasos, latitud, longitud, vertical, seca, pirotubular, acuotubular, igneotubular, eliminado) FROM stdin;
+COPY caldera (id_caldera, id_comuna, id_marca, id_inst, id_alimentacion, ano, pasos, latitud, longitud, vertical, seca, pirotubular, acuotubular, igneotubular, eliminado, gal_hora, lib_hora, id_usuario) FROM stdin;
 \.
 
 
@@ -591,6 +526,7 @@ SELECT pg_catalog.setval('mantenciones_id_mantencion_seq', 1, false);
 
 COPY marca (nom_marca, id_marca, eliminado) FROM stdin;
 marca1	1	f
+marca 2	2	t
 \.
 
 
@@ -598,7 +534,7 @@ marca1	1	f
 -- Name: marca_id_marca_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('marca_id_marca_seq', 1, true);
+SELECT pg_catalog.setval('marca_id_marca_seq', 2, true);
 
 
 --
@@ -613,14 +549,6 @@ COPY perfil (id_perfil, nom_perfil, eliminado) FROM stdin;
 
 
 --
--- Data for Name: tipo; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY tipo (nombre_tipo, id_tipo, gal_hora, libr_hora, pasos, eliminado) FROM stdin;
-\.
-
-
---
 -- Data for Name: tipo_contacto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -629,13 +557,6 @@ COPY tipo_contacto (id_cargo, nombre_cargo, eliminado) FROM stdin;
 2	Encargado Finanzas	f
 3	Encargado Caldera/Finanzas	f
 \.
-
-
---
--- Name: tipo_id_tipo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('tipo_id_tipo_seq', 1, false);
 
 
 --
@@ -669,14 +590,6 @@ ALTER TABLE ONLY actividades
 
 ALTER TABLE ONLY alimentacion
     ADD CONSTRAINT pk_alimentacion PRIMARY KEY (id_alimentacion, nom_alim);
-
-
---
--- Name: pk_asignacion; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY asignacion
-    ADD CONSTRAINT pk_asignacion PRIMARY KEY (email, id_caldera);
 
 
 --
@@ -736,14 +649,6 @@ ALTER TABLE ONLY perfil
 
 
 --
--- Name: pk_tipo; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY tipo
-    ADD CONSTRAINT pk_tipo PRIMARY KEY (nombre_tipo, id_tipo);
-
-
---
 -- Name: pk_tipo_contacto; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -752,11 +657,11 @@ ALTER TABLE ONLY tipo_contacto
 
 
 --
--- Name: pk_usuario; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY usuario
-    ADD CONSTRAINT pk_usuario PRIMARY KEY (email);
+    ADD CONSTRAINT usuario_pkey PRIMARY KEY (id_usuario);
 
 
 --
@@ -809,24 +714,10 @@ CREATE UNIQUE INDEX detalle_mantenciones_pk ON detalle_mantenciones USING btree 
 
 
 --
--- Name: es_alimentada_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX es_alimentada_fk ON caldera USING btree (id_alimentacion, nom_alim);
-
-
---
 -- Name: es_de_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX es_de_fk ON caldera USING btree (id_marca);
-
-
---
--- Name: es_de_tipo_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX es_de_tipo_fk ON caldera USING btree (nombre_tipo, id_tipo);
 
 
 --
@@ -900,27 +791,6 @@ CREATE INDEX tiene_un_fk ON usuario USING btree (id_perfil);
 
 
 --
--- Name: tiene_una2_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX tiene_una2_fk ON asignacion USING btree (id_caldera);
-
-
---
--- Name: tiene_una_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX tiene_una_fk ON asignacion USING btree (email);
-
-
---
--- Name: tiene_una_pk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE UNIQUE INDEX tiene_una_pk ON asignacion USING btree (email, id_caldera);
-
-
---
 -- Name: tipo_contacto_pk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -928,42 +798,11 @@ CREATE UNIQUE INDEX tipo_contacto_pk ON tipo_contacto USING btree (id_cargo);
 
 
 --
--- Name: tipo_pk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE UNIQUE INDEX tipo_pk ON tipo USING btree (nombre_tipo, id_tipo);
-
-
---
--- Name: fk_asignaci_asignacio_caldera; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY asignacion
-    ADD CONSTRAINT fk_asignaci_asignacio_caldera FOREIGN KEY (id_caldera) REFERENCES caldera(id_caldera) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: fk_asignaci_asignacio_usuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY asignacion
-    ADD CONSTRAINT fk_asignaci_asignacio_usuario FOREIGN KEY (email) REFERENCES usuario(email) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: fk_caldera_es_alimen_alimenta; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: caldera_id_usuario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY caldera
-    ADD CONSTRAINT fk_caldera_es_alimen_alimenta FOREIGN KEY (id_alimentacion, nom_alim) REFERENCES alimentacion(id_alimentacion, nom_alim) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: fk_caldera_es_de_tip_tipo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY caldera
-    ADD CONSTRAINT fk_caldera_es_de_tip_tipo FOREIGN KEY (nombre_tipo, id_tipo) REFERENCES tipo(nombre_tipo, id_tipo) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT caldera_id_usuario_fkey FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario);
 
 
 --
