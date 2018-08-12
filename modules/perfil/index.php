@@ -10,7 +10,7 @@
 
 <?php if($puede_agregar): ?>
 <a class="btn btn-primary" href="<?php echo mod_link('perfil', 'agregar'); ?>" role="button">
-	<span data-feather="user-plus"></span> Agregar
+	<span data-feather="plus-square"></span> Agregar
 </a>
 <br><br>
 <?php endif; ?>
