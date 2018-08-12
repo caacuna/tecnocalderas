@@ -23,7 +23,7 @@
 					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('marca', 'editar', $fila->id_marca); ?>" role="button">
 						<span data-feather="edit"></span> Editar
 					</a>
-					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('marca', 'eliminar', $fila->id_marca); ?>" role="button">
+					<a class="btn btn-secondary btn-sm eliminar" href="<?php echo mod_link('marca', 'eliminar', $fila->id_marca); ?>" data-toggle="modal" data-target="#modal_eliminar" role="button">
 						<span data-feather="trash"></span> Eliminar
 					</a>
 				</td>
@@ -32,5 +32,7 @@
 		</tbody>
 	</table>
 </div>
+
+<?php modal_eliminar('Eliminar Marca', '¿Está seguro de eliminar esta Marca?'); ?>
 
 <?php include 'includes/footer.php'; ?>

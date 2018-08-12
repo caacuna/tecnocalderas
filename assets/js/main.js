@@ -27,4 +27,9 @@ $(document).ready(function() {
 	});
 
 	$('#datatable').DataTable();
+	
+	$('#datatable .eliminar').on('click', function() {
+		new_href = $(this).attr('href');
+		$('#confirmar-eliminar').attr('href', new_href);
+	});	
 });

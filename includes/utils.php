@@ -100,6 +100,17 @@ function sopt_selected($name, $opt, $init_opt = NULL) {
 }
 
 /**
+ * Incluye Modal Eliminar
+ * 
+ * @param  string $titulo  titulo modal
+ * @param  string $mensaje mensaje modal
+ * @return void
+ */
+function modal_eliminar($titulo, $mensaje) {
+	include 'includes/modal_eliminar.php';
+}
+
+/**
  * Verifica si el usuario con sesión actual tiene permiso a un módulo y acción dados
  * 
  * @param  string $mod     módulo

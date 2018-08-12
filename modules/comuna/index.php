@@ -23,7 +23,7 @@
 					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('comuna', 'editar', $fila->id_comuna); ?>" role="button">
 						<span data-feather="edit"></span> Editar
 					</a>
-					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('comuna', 'eliminar', $fila->id_comuna); ?>" role="button">
+					<a class="btn btn-secondary btn-sm eliminar" href="<?php echo mod_link('comuna', 'eliminar', $fila->id_comuna); ?>" data-toggle="modal" data-target="#modal_eliminar" role="button">
 						<span data-feather="trash"></span> Eliminar
 					</a>
 				</td>
@@ -32,5 +32,7 @@
 		</tbody>
 	</table>
 </div>
+
+<?php modal_eliminar('Eliminar Comuna', '¿Está seguro de eliminar esta Comuna?'); ?>
 
 <?php include 'includes/footer.php'; ?>

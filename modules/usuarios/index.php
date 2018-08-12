@@ -37,36 +37,6 @@
 	</table>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modal_eliminar" tabindex="-1" role="dialog" aria-labelledby="modal_eliminar" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_eliminar_title">Eliminar Usuario</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-     	¿Está seguro de eliminar este Usuario?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <a href="#" class="btn btn-danger" id="confirmar-eliminar">Eliminar</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<?php ob_start(); ?>
-<script>
-$(document).ready(function() {
-	$('.eliminar').on('click', function() {
-		new_href = $(this).attr('href');
-		$('#confirmar-eliminar').attr('href', new_href);
-	});
-});	
-</script>
-<?php $scripts = ob_get_clean(); ?>
+<?php modal_eliminar('Eliminar Usuario', '¿Está seguro de eliminar este Usuario?'); ?>
 
 <?php include 'includes/footer.php'; ?>

@@ -23,7 +23,7 @@
 					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('tipo_contacto', 'editar', $fila->id_cargo); ?>" role="button">
 						<span data-feather="edit"></span> Editar
 					</a>
-					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('tipo_contacto', 'eliminar', $fila->id_cargo); ?>" role="button">
+					<a class="btn btn-secondary btn-sm eliminar" href="<?php echo mod_link('tipo_contacto', 'eliminar', $fila->id_cargo); ?>" data-toggle="modal" data-target="#modal_eliminar" role="button">
 						<span data-feather="trash"></span> Eliminar
 					</a>
 				</td>
@@ -32,5 +32,7 @@
 		</tbody>
 	</table>
 </div>
+
+<?php modal_eliminar('Eliminar Cargo Empresa', '¿Está seguro de eliminar este Cargo Empresa?'); ?>
 
 <?php include 'includes/footer.php'; ?>

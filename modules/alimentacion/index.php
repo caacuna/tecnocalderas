@@ -23,7 +23,7 @@
 					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('alimentacion', 'editar', $fila->id_alimentacion); ?>" role="button">
 						<span data-feather="edit"></span> Editar
 					</a>
-					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('alimentacion', 'eliminar', $fila->id_alimentacion); ?>" role="button">
+					<a class="btn btn-secondary btn-sm eliminar" href="<?php echo mod_link('alimentacion', 'eliminar', $fila->id_alimentacion); ?>" data-toggle="modal" data-target="#modal_eliminar" role="button">
 						<span data-feather="trash"></span> Eliminar
 					</a>
 				</td>
@@ -32,5 +32,7 @@
 		</tbody>
 	</table>
 </div>
+
+<?php modal_eliminar('Eliminar Tipo de Alimentacion de Caldera', '¿Está seguro de eliminar este Tipo de Alimentacion de Caldera?'); ?>
 
 <?php include 'includes/footer.php'; ?>
