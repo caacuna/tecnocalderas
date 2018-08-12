@@ -36,7 +36,7 @@
 	<div class="form-row">
 		<div class="col-md-8 mb-3">
 			<label for="direccion">Direccion</label>
-			<input type="text" name="direcion" class="form-control" id="direccion" placeholder="Direccion" value="<?php ival('direccion')?>" required>
+			<input type="text" name="direccion" class="form-control" id="direccion" placeholder="Direccion" value="<?php ival('direccion')?>" required>
 			<div class="invalid-feedback">
 				Ingrese Direccion
 			</div>			
