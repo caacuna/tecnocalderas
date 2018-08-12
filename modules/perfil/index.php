@@ -1,20 +1,10 @@
 <?php
 	$titulo = 'Perfiles';
 	include 'includes/header.php';
-	$query = pg_query($db_connection, "SELECT * FROM perfil where eliminado = 'f'");
-
-	$puede_agregar = tiene_permiso('perfil', 'agregar');
+	$query = pg_query($db_connection, "SELECT * FROM perfil");
 	$puede_editar = tiene_permiso('perfil', 'editar');
 	$ve_acciones = $puede_editar;	
 ?>
-
-<?php if($puede_agregar): ?>
-<a class="btn btn-primary" href="<?php echo mod_link('perfil', 'agregar'); ?>" role="button">
-	<span data-feather="plus-square"></span> Agregar
-</a>
-<br><br>
-<?php endif; ?>
-
 <div class="table-responsive">
 	<table id="datatable" class="table table-striped table-bordered">
 		<thead class="thead-dark">
