@@ -53,7 +53,7 @@
 			'eliminar' => [1]			
 		],
 		'calderas'=>[
-			'index'=>[1],
+			'index'=>[1,2,3],
 			'agregar' => [1],
 			'editar' => [1],
 			'eliminar' => [1],
