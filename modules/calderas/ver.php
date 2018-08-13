@@ -38,7 +38,12 @@
 	include 'includes/header.php';
 
 	// mantenciones
-	$query_string = "SELECT M.*, CONCAT(U.nombres, ' ', U.apellidos) AS tecnico
+	$subquery_string = "SELECT STRING_AGG(A.nombre_act::text, ', ')
+		FROM actividades_mantencion AM
+		LEFT JOIN actividades A ON A.id_act = AM.id_act
+		WHERE AM.id_mantencion = M.id_mantencion";
+
+	$query_string = "SELECT M.*, CONCAT(U.nombres, ' ', U.apellidos) AS tecnico, ($subquery_string) AS actividades
 			FROM mantenciones M
 			LEFT JOIN usuario U ON U.id_usuario = M.id_usuario
 			WHERE M.id_caldera = $id_caldera AND M.eliminado = false";
@@ -110,6 +115,7 @@
 			<tr>
 				<th scope="col">Fecha</th>
 				<th scope="col">Técnico</th>
+				<th scope="col">Actividades</th>
 				<th scope="col">Comentario</th>
 				<?php if($ve_acciones_mantencion): ?>
 				<th scope="col" class="acciones">Acciones</th>
@@ -121,6 +127,7 @@
 			<tr>
 				<td scope="row"><?php echo date('d-m-Y', strtotime($fila->fecha_mant)); ?></td>
 				<td><?php echo $fila->tecnico; ?></td>
+				<td><?php echo $fila->actividades; ?></td>
 				<td><?php echo $fila->comentario; ?></td>
 				<?php if($ve_acciones_mantencion): ?>
 				<td>
