@@ -28,7 +28,7 @@
 		],
 		'perfil'=>[
 			'index' =>[1],
-			'editar' => [1]			
+			'editar' => []			
 		],
 		'institucion'=>[
 			'index'=>[1],
