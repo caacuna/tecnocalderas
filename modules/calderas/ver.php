@@ -11,6 +11,11 @@
 			LEFT JOIN alimentacion A ON A.id_alimentacion = CAL.id_alimentacion
 			LEFT JOIN usuario U ON U.id_usuario = CAL.id_usuario
 			WHERE CAL.id_caldera=$id_caldera AND CAL.eliminado = false";
+			if(usuario('id_perfil') == 2) { // limitar a calderas del tecnico
+				$query_string .= " AND CAL.id_usuario = " . usuario('id');
+			} else if(usuario('id_perfil') == 3) { // limitar a calderas de cliente
+				$query_string .= " AND CAL.id_inst = " . usuario('id_inst');
+			}
 
 		$query = pg_query($query_string);
 		if(pg_num_rows($query) == 0) {
