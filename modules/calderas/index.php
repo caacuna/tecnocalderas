@@ -11,9 +11,10 @@
 	$query = pg_query($query_string);
 
 	$puede_agregar = tiene_permiso('calderas', 'agregar');
+	$puede_ver = tiene_permiso('calderas', 'ver');
 	$puede_editar = tiene_permiso('calderas', 'editar');
 	$puede_eliminar = tiene_permiso('calderas', 'eliminar');
-	$ve_acciones = $puede_editar || $puede_eliminar;
+	$ve_acciones = $puede_ver || $puede_editar || $puede_eliminar;
 ?>
 
 <?php if($puede_agregar): ?>
@@ -33,7 +34,7 @@
 				<th scope="col">Marca</th>
 				<th scope="col">Técnico</th>
 				<?php if($ve_acciones): ?>
-				<th scope="col" class="acciones">Acciones</th>
+				<th scope="col" class="acciones-wide">Acciones</th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -47,6 +48,11 @@
 				<td><?php echo $fila->tecnico; ?></td>
 				<?php if($ve_acciones): ?>
 				<td>
+					<?php if($puede_ver): ?>	
+					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('calderas', 'ver', $fila->id_caldera); ?>" role="button">
+						<span data-feather="eye"></span> Ver
+					</a>
+					<?php endif; ?>
 					<?php if($puede_editar): ?>	
 					<a class="btn btn-secondary btn-sm" href="<?php echo mod_link('calderas', 'editar', $fila->id_caldera); ?>" role="button">
 						<span data-feather="edit"></span> Editar

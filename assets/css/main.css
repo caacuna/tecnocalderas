@@ -71,7 +71,11 @@ body {
 }
 
 #datatable .acciones {
-  width: 150px;
+  width: 150px !important;
+}
+
+#datatable .acciones-wide {
+  width: 250px !important;
 }
 
 /*

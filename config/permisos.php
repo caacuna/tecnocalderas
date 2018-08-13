@@ -56,6 +56,8 @@
 			'index'=>[1],
 			'agregar' => [1],
 			'editar' => [1],
-			'eliminar' => [1]			
+			'eliminar' => [1],
+			'ver' => [1],
+			'agregar_mantencion' => [1]		
 		],
 	];
