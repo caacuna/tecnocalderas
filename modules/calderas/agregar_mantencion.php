@@ -80,7 +80,7 @@
     		<textarea name="comentario"	class="form-control" id="comentario" placeholder="Comentario" rows="3"><?php ival('comentario'); ?></textarea>
 		</div>
 	</div>
-	<button class="btn btn-primary" type="submit">Guardar</button>
+	<button class="btn btn-primary" type="submit"><span data-feather="save"></span> Guardar</button>
 </form>
 
 <?php ob_start(); ?>

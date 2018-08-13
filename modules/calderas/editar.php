@@ -224,7 +224,7 @@
 			</div>
 		</div>		
 	</div>			
-	<button class="btn btn-primary" type="submit">Guardar</button>
+	<button class="btn btn-primary" type="submit"><span data-feather="save"></span> Guardar</button>
 </form>
 
 <?php ob_start(); ?>
