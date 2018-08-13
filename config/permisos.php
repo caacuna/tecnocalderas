@@ -53,11 +53,11 @@
 			'eliminar' => [1]			
 		],
 		'calderas'=>[
-			'index'=>[1,2,3],
+			'index'=>[1, 2, 3],
 			'agregar' => [1],
 			'editar' => [1],
 			'eliminar' => [1],
-			'ver' => [1,2,3],
-			'agregar_mantencion' => [1]		
+			'ver' => [1, 2, 3],
+			'agregar_mantencion' => [1, 2]		
 		],
 	];

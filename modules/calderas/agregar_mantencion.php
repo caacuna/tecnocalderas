@@ -3,7 +3,11 @@
 	// verificar existencia de registro
 	$registro = [];
 	if(!empty($id_caldera)) {
-		$query = pg_query("SELECT * FROM caldera WHERE id_caldera=$id_caldera AND eliminado = false");
+		$query_string = "SELECT * FROM caldera WHERE id_caldera=$id_caldera AND eliminado = false";
+		if(usuario('id_perfil') == 2) { // limitar a calderas del tecnico
+			$query_string .= " AND id_usuario = " . usuario('id');
+		}
+		$query = pg_query($query_string);
 		if(pg_num_rows($query) == 0) {
 			set_alert('La caldera a la que intenta agregar mantención no existe.', 'danger');
 			header("Location: " . mod_link('calderas'));
