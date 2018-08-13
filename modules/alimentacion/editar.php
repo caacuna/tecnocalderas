@@ -43,7 +43,8 @@
 				Ingrese Tipo de Alimentacion
 			</div>
 		</div>
-	</div>  	
+	</div>
+	<a href="<?php echo mod_link('alimentacion'); ?>" class="btn btn-secondary">Cancelar</a>  	
   	<button class="btn btn-primary" type="submit"><span data-feather="save"></span> Guardar</button>
 </form>
 <?php include 'includes/footer.php'; ?>

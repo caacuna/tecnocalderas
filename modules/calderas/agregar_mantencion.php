@@ -80,6 +80,7 @@
     		<textarea name="comentario"	class="form-control" id="comentario" placeholder="Comentario" rows="3"><?php ival('comentario'); ?></textarea>
 		</div>
 	</div>
+	<a href="<?php echo mod_link('calderas', 'ver', $id_caldera); ?>" class="btn btn-secondary">Cancelar</a>
 	<button class="btn btn-primary" type="submit"><span data-feather="save"></span> Guardar</button>
 </form>
 

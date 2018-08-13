@@ -24,7 +24,8 @@
 				Ingrese Nombre
 			</div>
 		</div>
-	</div>  	
+	</div>
+	<a href="<?php echo mod_link('marca'); ?>" class="btn btn-secondary">Cancelar</a>  	
   	<button class="btn btn-primary" type="submit"><span data-feather="save"></span> Guardar</button>
 </form>
 
